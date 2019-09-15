@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
-import MovieList from './components/MovieList';
-import MovieSearch from './components/MovieSearch';
+import MovieList from './containers/MovieList';
+import MovieSearch from './containers/MovieSearch';
 import moviesApi from './libs/movies-api';
 
 function App() {
