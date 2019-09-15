@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import MovieItem from './MovieItem'
 import MovieDetail from './MovieDetail'
 import moviesApi from '../libs/movies-api'
@@ -7,8 +7,6 @@ function MovieList(props) {
   const [state, setState] = useState({
     isActive: false,
     title: '',
-    results: [],
-    page: 1,
   })
 
   const onOpenDetail = (movie) => {
@@ -19,28 +17,9 @@ function MovieList(props) {
     setState({ isActive: false, title: ''})
   }
 
-  const onLoadUpcomingMovies = async () => {
-    setState({ ...state, page: state.page + 1 })
-  }
-
-  async function getUpcomingMovies() {
-    try {
-      const { data } = await moviesApi.getUpcomingMovies(state.page)
-      const { results, page } = data
-      setState({ results: state.results.concat(results), page })
-    } catch(e) {
-      console.error(e)
-    }
-  }
-
-  useEffect(() => {
-    getUpcomingMovies()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.page])
-
   return (
     <div>
-      {state.results.map((movie) => {
+      {props.results.map((movie) => {
         return (
           <MovieItem
             key={movie.id}
@@ -52,7 +31,7 @@ function MovieList(props) {
         )
       })}
       <div>
-        <button onClick={onLoadUpcomingMovies}>Load More {state.page}</button>
+        <button onClick={props.onLoadUpcomingMovies}>Load More</button>
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' }) }>Topo</button>
       </div>
       <MovieDetail

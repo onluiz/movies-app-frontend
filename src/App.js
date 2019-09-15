@@ -1,68 +1,51 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import MovieList from './components/MovieList';
 import MovieSearch from './components/MovieSearch';
 import moviesApi from './libs/movies-api';
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      movies: [],
-      page: 1,
-    }
+function App() {
+  const [state, setState] = useState({
+    results: [],
+    page: 1,
+  })
+
+  const onLoadUpcomingMovies = async () => {
+    setState({ ...state, page: state.page + 1 })
   }
 
-  async componentDidMount() {
-    this.loadUpcomingMovies()
-  }
-
-  loadMore = async () => {
-    this.incrementPage()
-    const response = await moviesApi.getUpcomingMovies(this.state.page)
-    const { results } = response.data
-    this.setState({
-      ...this.state,
-      movies: this.state.movies.concat(results),
-    })
-  }
-
-  loadUpcomingMovies = async () => {
+  async function getUpcomingMovies() {
     try {
-      const response = await moviesApi.getUpcomingMovies(this.state.page)
-      const { results, page } = response.data
-      this.setState({ ...this.state, movies: results, page })
-    } catch(error) {
-      console.error(error)
+      const { data } = await moviesApi.getUpcomingMovies(state.page)
+      const { results, page } = data
+      setState({ results: state.results.concat(results), page })
+    } catch(e) {
+      console.error(e)
     }
   }
 
-  incrementPage = () => {
-    this.setState({ ...this.state, page: this.state.page + 1 })
+  useEffect(() => {
+    getUpcomingMovies()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.page])
+
+  const onSearchDone = ({ results, page }) => {
+    setState({...state, results, page })
   }
 
-  onSearchDone = ({ results, page }) => {
-    this.setState({...this.state, movies: results, page })
+  const onSearchClean = () => {
+    getUpcomingMovies()
   }
 
-  onSearchClean = () => {
-    this.loadUpcomingMovies()
-  }
-
-  render() {
-    return (
+  return (
+    <div>
+      <NavBar />
       <div>
-        <NavBar />
-        <div>
-          <br />
-          <br />
-          <br />
-          <MovieSearch onSearchDone={this.onSearchDone} onSearchClean={this.onSearchClean}/>
-          <MovieList />
-        </div>
+        <MovieSearch onSearchDone={onSearchDone} onSearchClean={onSearchClean}/>
+        <MovieList onLoadUpcomingMovies={onLoadUpcomingMovies} results={state.results} />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default App;
