@@ -51,7 +51,7 @@ function MovieSearch(props) {
     >
       <div className="field MovieSearch">
         <div className="control">
-          <input onChange={onChange} className="input is-medium" type="text" placeholder="Text input"  />
+          <input onChange={onChange} className="input is-medium" type="text" placeholder="Digite aqui o filme desejado"  />
         </div>
       </div>
     </Modal>

@@ -37,7 +37,7 @@ function MovieList(props) {
   }
 
   return (
-    <div>
+    <div className="MovieList">
       {props.results.map((movie) => {
         return (
           <div className="MovieList-item" key={movie.id}>
@@ -52,9 +52,9 @@ function MovieList(props) {
           </div>
         )
       })}
-      <div>
-        <button onClick={props.onLoadUpcomingMovies}>Load More</button>
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' }) }>Topo</button>
+      <div className="MovieList-load-more">
+        <button className="button" onClick={props.onLoadUpcomingMovies}>Carregar mais</button>
+        <button className="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' }) }>Topo</button>
       </div>
       <MovieDetail isActive={state.isActive} title={state.title} onClose={onCloseDetail}>
         <div>
