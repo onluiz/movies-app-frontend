@@ -17,6 +17,12 @@ function MovieItem(props) {
         </div>
 
         <div className="content">
+          <div>
+            <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+          </div>
+          <div className="tags">
+            {props.genres.map(genre => <span key={genre.id} class="tag is-black">{genre.name}</span>)}
+          </div>
           <button className="button" onClick={() => props.onOpenDetail(props.movieId)}>Ver detalhes</button>
         </div>
       </div>

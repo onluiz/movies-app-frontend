@@ -1,16 +1,28 @@
 import React, { useState } from 'react'
+import Modal from '../components/Modal'
 import moviesApi from '../libs/movies-api'
+import './css/MovieSearch.css'
 
 function MovieSearch(props) {
-  const [state, setState] = useState({ searchText: '' })
+  const [state, setState] = useState({
+    searchText: '',
+    isLoading: false,
+  })
 
   const onChange = (event) => {
-    setState({ searchText: event.target.value })
+    setState({ ...state, searchText: event.target.value })
   }
 
   const onSearch = async () => {
-    const response = await moviesApi.searchByName(state.searchText)
-    props.onSearchDone(response.data)
+    setState({ ...state, isLoading: true })
+    try {
+      const response = await moviesApi.searchByName(state.searchText)
+      props.onSearchDone(response.data)
+    } catch(e) {
+      console.error(e)
+    } finally {
+      setState({ ...state, isLoading: false })
+    }
   }
 
   const onClean = () => {
@@ -19,11 +31,30 @@ function MovieSearch(props) {
   }
 
   return (
-    <div>
-      <input onChange={onChange} className="input" type="text" placeholder="Text input"  />
-      <button onClick={onSearch} className="button">Buscar</button>
-      <button onClick={onClean} className="button">Limpar</button>
-    </div>
+    <Modal
+      title={'Buscar filme'}
+      isActive={props.isActive}
+      onClose={props.onClose}
+      footer={
+        <footer className="modal-card-foot">
+          <button
+            onClick={onSearch}
+            disabled={state.isLoading ? true : false}
+            className={`button is-info is-medium ${state.isLoading ? 'is-loading' : ''}`}>
+              Buscar
+            </button>
+            <button onClick={onClean} disabled={state.isLoading ? true : false} className="button is-medium">
+              Cancelar
+            </button>
+        </footer>
+      }
+    >
+      <div className="field MovieSearch">
+        <div className="control">
+          <input onChange={onChange} className="input is-medium" type="text" placeholder="Text input"  />
+        </div>
+      </div>
+    </Modal>
   )
 }
 

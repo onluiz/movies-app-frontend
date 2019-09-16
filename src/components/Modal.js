@@ -1,5 +1,19 @@
 import React from 'react'
 
+function ModalFooter(props) {
+  return (
+    <footer className="modal-card-foot">
+      <button className={`button is-info is-medium`}>
+        Buscar
+            </button>
+      <button
+        className={`button is-medium`}>
+        Cancelar
+            </button>
+    </footer>
+  )
+}
+
 function Modal(props) {
   return (
     <div className={`modal ${props.isActive ? 'is-active' : ''}`}>
@@ -12,10 +26,7 @@ function Modal(props) {
         <section className="modal-card-body">
           {props.children}
         </section>
-        <footer className="modal-card-foot">
-          <button className="button is-success">Save changes</button>
-          <button className="button" onClick={props.onClose}>Cancel</button>
-        </footer>
+        {props.footer ? props.footer : <ModalFooter />}
       </div>
     </div>
   )

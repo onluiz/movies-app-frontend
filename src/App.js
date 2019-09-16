@@ -3,11 +3,16 @@ import NavBar from './components/NavBar';
 import MovieList from './containers/MovieList';
 import MovieSearch from './containers/MovieSearch';
 import moviesApi from './libs/movies-api';
+import './App.css';
 
 function App() {
   const [state, setState] = useState({
     results: [],
     page: 1,
+  })
+
+  const [searchModal, setSearchModal] = useState({
+    isActive: false,
   })
 
   const onLoadUpcomingMovies = async () => {
@@ -29,8 +34,17 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.page])
 
+  const onClickSearch = () => {
+    setSearchModal({ isActive: true })
+  }
+
+  const onCloseSearch = () => {
+    setSearchModal({ isActive: false })
+  }
+
   const onSearchDone = ({ results, page }) => {
     setState({...state, results, page })
+    setSearchModal({ isActive: false })
   }
 
   const onSearchClean = () => {
@@ -38,12 +52,10 @@ function App() {
   }
 
   return (
-    <div>
-      <NavBar />
-      <div>
-        <MovieSearch onSearchDone={onSearchDone} onSearchClean={onSearchClean}/>
-        <MovieList onLoadUpcomingMovies={onLoadUpcomingMovies} results={state.results} />
-      </div>
+    <div className="App">
+      <NavBar onClickSearch={onClickSearch} />
+      <MovieSearch onSearchDone={onSearchDone} onSearchClean={onSearchClean} isActive={searchModal.isActive} onClose={onCloseSearch}/>
+      <MovieList onLoadUpcomingMovies={onLoadUpcomingMovies} results={state.results} />
     </div>
   )
 }

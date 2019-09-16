@@ -1,0 +1,16 @@
+.MovieSearch {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.MovieSearch-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.MovieSearch-button-search {
+  margin-bottom: 10px;
+}

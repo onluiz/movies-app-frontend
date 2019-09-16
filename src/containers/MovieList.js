@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MovieItem from './MovieItem'
 import MovieDetail from './MovieDetail'
 import moviesApi from '../libs/movies-api'
+import './css/MovieList.css'
 
 function MovieList(props) {
   const [state, setState] = useState({
@@ -21,13 +22,16 @@ function MovieList(props) {
     <div>
       {props.results.map((movie) => {
         return (
-          <MovieItem
-            key={movie.id}
-            movieId={movie.id}
-            title={movie.title}
-            poster={moviesApi.getImage(movie.poster_path)}
-            onOpenDetail={() => onOpenDetail(movie)}>
-          </MovieItem>
+          <div className="MovieList-item">
+            <MovieItem
+              key={movie.id}
+              movieId={movie.id}
+              title={movie.title}
+              genres={movie.genres}
+              poster={moviesApi.getImage(movie.poster_path)}
+              onOpenDetail={() => onOpenDetail(movie)}>
+            </MovieItem>
+          </div>
         )
       })}
       <div>
