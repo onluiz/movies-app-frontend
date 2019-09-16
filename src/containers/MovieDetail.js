@@ -6,7 +6,14 @@ function MovieDetail(props) {
     <Modal
       isActive={props.isActive}
       title={props.title}
-      onClose={props.onClose}>
+      onClose={props.onClose}
+      footer={
+        <footer className="modal-card-foot">
+            <button onClick={props.onClose} className="button is-medium">
+              Cancelar
+            </button>
+        </footer>
+      }>
       {props.children}
     </Modal>
   )
