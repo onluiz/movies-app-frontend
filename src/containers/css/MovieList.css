@@ -1,0 +1,19 @@
+.MovieList-item {
+  margin-bottom: 10px;
+}
+
+.MovieList-load-more {
+  width: 100%;
+  display: flex;
+  grid-column-start: span 4;
+  justify-content: center;
+}
+
+@media (min-width: 500px) {
+  .MovieList {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+  }
+}
